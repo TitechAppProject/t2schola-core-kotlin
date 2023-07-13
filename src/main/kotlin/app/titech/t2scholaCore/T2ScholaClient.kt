@@ -6,29 +6,29 @@ import java.net.HttpCookie
 class T2ScholaClient {
     private val apiClient = APIClientImpl()
 
-    suspend fun getToken(authCookies: List<HttpCookie>): Result<String> =
+    suspend fun getToken(authCookies: List<HttpCookie>): String =
         apiClient.send(LoginRequest(authCookies))
 
-    suspend fun getSiteInfo(wsToken: String): Result<SiteInfoResponse> =
+    suspend fun getSiteInfo(wsToken: String): SiteInfoResponse =
         apiClient.send(SiteInfoRequest(wsToken))
 
-    suspend fun getUserCourses(userId: Int, wsToken: String): Result<UserEnrolCoursesResponse> =
+    suspend fun getUserCourses(userId: Int, wsToken: String): UserEnrolCoursesResponse =
         apiClient.send(UserEnrolCourseRequest(userId, wsToken))
 
-    suspend fun getCourseCategories(wsToken: String): Result<CourseCategoriesResponse> =
+    suspend fun getCourseCategories(wsToken: String): CourseCategoriesResponse =
         apiClient.send(CourseCategoryRequest(wsToken))
 
-    suspend fun getCourseContents(courseId: Int, wsToken: String) =
+    suspend fun getCourseContents(courseId: Int, wsToken: String): CourseContentsResponse =
         apiClient.send(CourseContentsRequest(courseId, wsToken))
 
-    suspend fun getAssignments(wsToken: String): Result<AssignmentsResponse> =
+    suspend fun getAssignments(wsToken: String): AssignmentsResponse =
         apiClient.send(AssignmentsRequest(wsToken))
 
     suspend fun getAssignmentSubmissionStatus(
         assignmentId: Int,
         userId: Int,
         wsToken: String
-    ): Result<AssignmentSubmissionStatusResponse> =
+    ): AssignmentSubmissionStatusResponse =
         apiClient.send(AssignmentSubmissionStatusRequest(assignmentId, userId, wsToken))
 
     companion object {

@@ -7,17 +7,12 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.*
 
-sealed class Result<out R> {
-    data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
-}
-
 interface APIClient {
-    suspend fun <Response> send(request: Request<Response>): Result<Response>
+    suspend fun <Response> send(request: Request<Response>): Response
 }
 
 class APIClientImpl : APIClient {
-    override suspend fun <Response> send(request: Request<Response>): Result<Response> =
+    override suspend fun <Response> send(request: Request<Response>): Response =
         withContext(Dispatchers.IO) {
             var urlString = request.baseURL + request.path
             request.queryParameters?.run {
@@ -30,11 +25,7 @@ class APIClientImpl : APIClient {
                 generateUrlConnection(url, request.httpMethod, request.headerFields, cookies)
 
             do {
-                try {
-                    connection.connect()
-                } catch (e: Exception) {
-                    return@withContext Result.Error(e)
-                }
+                connection.connect()
 
                 connection.headerFields["Set-Cookie"]?.flatMap {
                     HttpCookie.parse(it)
@@ -79,7 +70,7 @@ class APIClientImpl : APIClient {
 
             val html = sb.toString()
 
-            return@withContext Result.Success(request.decode(html))
+            return@withContext request.decode(html)
         }
 
     private fun generateUrlConnection(

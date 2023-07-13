@@ -22,8 +22,8 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "app.titech"
-            artifactId = "t2schola-core-kotlin"
-            version = "1.0"
+            artifactId = "t2schola-core"
+            version = "1.1.0"
 
             from(components["java"])
         }
