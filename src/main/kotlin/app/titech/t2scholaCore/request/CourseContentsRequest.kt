@@ -11,7 +11,8 @@ class CourseContentsRequest(courseId: Int, wsToken: String) :
     override val queryParameters: Map<String, Any>? = mapOf(
         "moodlewsrestformat" to "json",
         "wstoken" to wsToken,
-        "wsfunction" to "core_course_get_contents"
+        "wsfunction" to "core_course_get_contents",
+        "courseid" to courseId
     )
 
     override fun decode(string: String): CourseContentsResponse {
